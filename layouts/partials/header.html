@@ -1,7 +1,7 @@
 <header class="site-header{{ if .IsHome }} home{{ end }}">
   <div class="container header-inner">
     <div class="topbar">
-      <a class="brand" href="{{ "/" | relURL }}">{{ .Site.Title }}</a>
+      <a class="brand" href="{{ .Site.Home.RelPermalink }}">{{ .Site.Title }}</a>
       <nav aria-label="Sections">
         {{ range .Site.Menus.main }}
           <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . | or ($.HasMenuCurrent "main" .) }} aria-current="page"{{ end }}>{{ .Name }}</a>

@@ -9,7 +9,7 @@
   </div>
   <div class="page-body{{ if $hasFacts }} has-facts{{ end }}">
     <div class="content">{{ .Content }}
-      {{ with $p.tags }}<p class="tags">{{ range . }}<a href="{{ "/tags/" | relURL }}{{ . | urlize }}/">{{ . }}</a>{{ end }}</p>{{ end }}
+      {{ with $p.tags }}<p class="tags">{{ range . }}{{ with $.Site.GetPage (printf "/tags/%s" (. | urlize)) }}<a href="{{ .RelPermalink }}">{{ .Title }}</a>{{ end }}{{ end }}</p>{{ end }}
     </div>
     {{ partial "place-meta.html" . }}
   </div>
