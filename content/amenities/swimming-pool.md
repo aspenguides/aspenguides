@@ -7,7 +7,9 @@ weight = 10
 
 [params]
   hours = 'Daily 08:00–20:00'
-  distance = 'On site, behind reception'
+  distance = 'On site, behind security'
 +++
 
-Towels are available at reception. Children under 12 must be accompanied by an adult.
+![The outdoor pool with sun loungers and umbrellas, surrounded by hedges and trees](/images/swimming-pool.jpg)
+
+Children under 12 must be accompanied by an adult.
