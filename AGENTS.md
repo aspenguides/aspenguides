@@ -122,9 +122,8 @@ in the repo root is git-ignored; never commit originals.
 
 ## Analytics
 
-Google Analytics is wired in `layouts/_default/baseof.html` via Hugo's
-built-in template and switched on by setting `services.googleAnalytics.id`
-in `hugo.toml`. It only loads in production builds. Guests are mostly in the
+Google Analytics is emitted by `layouts/partials/analytics.html` and
+switched on by setting `googleAnalyticsID` under `[params]` in `hugo.toml`. It only loads in production builds. Guests are mostly in the
 EU, so before enabling it decide on cookie consent (GA sets cookies) or use a
 cookieless tool instead; see the analytics bead.
 
