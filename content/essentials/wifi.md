@@ -2,8 +2,11 @@
 title = 'Wi-Fi'
 date = '2026-09-07'
 draft = false
-summary = 'How to connect to the guest network.'
+summary = 'Free Wi-Fi in the pool area.'
 weight = 10
+
+[params]
+  distance = 'Pool area'
 +++
 
-Network: **AspenSuites-Guest**. The password is on the card in your room or available from reception.
+A free Wi-Fi network is available in the pool area. The password is available at the security guard's booth.
