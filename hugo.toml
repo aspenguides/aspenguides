@@ -8,7 +8,7 @@ title = 'Aspen Suites Guest Guide'
   # Address shown in the footer and used for "directions" links.
   address = 'Aspen Suites'
   # Shown in the footer under the header photo (static/images/pirin-lakes.jpg).
-  photoCredit = 'Header photo: Gergiyski lakes, Pirin.'
+  photoCredit = 'Header photo: <a href="https://commons.wikimedia.org/wiki/File:Pirin_-_Gergiyski_ezera_-_IMG_4439.jpg">Gergiyski lakes, Pirin</a> by Dido3, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, cropped and resized.'
 
 # Section order and labels for the top navigation.
 [[menus.main]]
