@@ -1,0 +1,16 @@
+{{ define "main" }}
+{{ with .Content }}<div class="content intro">{{ . }}</div>{{ end }}
+<ul class="sections">
+  {{ range .Site.Menus.main }}
+  {{ with $.Site.GetPage .PageRef }}
+  <li>
+    <a href="{{ .RelPermalink }}">
+      <span class="section-title">{{ .Title }}</span>
+      {{ with .Params.summary }}<span class="section-summary">{{ . }}</span>{{ end }}
+      <span class="section-count">{{ len .RegularPages }} {{ if eq (len .RegularPages) 1 }}entry{{ else }}entries{{ end }}</span>
+    </a>
+  </li>
+  {{ end }}
+  {{ end }}
+</ul>
+{{ end }}

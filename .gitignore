@@ -4,3 +4,11 @@
 *.db
 .beads-credential-key
 .beads/proxieddb/
+
+# Hugo build output
+public/
+resources/_gen/
+.hugo_build.lock
+
+# Original full-size photos (web copies live in static/images/)
+/Pirin_-_Gergiyski_ezera_-_IMG_4439.jpg

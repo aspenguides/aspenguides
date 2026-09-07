@@ -1,0 +1,17 @@
+{{ define "main" }}
+{{ $p := .Params }}
+{{ $hasFacts := or $p.address $p.distance $p.phone $p.website $p.hours $p.price $p.map }}
+<article class="page">
+  <div class="page-head">
+    <p class="crumbs"><a href="{{ .Parent.RelPermalink }}">{{ .Parent.Title }}</a></p>
+    <h1>{{ .Title }}{{ if $p.sponsored }} <span class="badge">Sponsored</span>{{ end }}</h1>
+    {{ with $p.summary }}<p class="lead">{{ . }}</p>{{ end }}
+  </div>
+  <div class="page-body{{ if $hasFacts }} has-facts{{ end }}">
+    <div class="content">{{ .Content }}
+      {{ with $p.tags }}<p class="tags">{{ range . }}<a href="{{ "/tags/" | relURL }}{{ . | urlize }}/">{{ . }}</a>{{ end }}</p>{{ end }}
+    </div>
+    {{ partial "place-meta.html" . }}
+  </div>
+</article>
+{{ end }}

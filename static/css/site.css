@@ -1,0 +1,103 @@
+/* Aspen Suites guest guide. One column, one mountain ridge, quiet below it.
+   Change the palette here; the ridge colours live in layouts/partials/mountains.html. */
+:root {
+  --snow: #f7f9f8;
+  --paper: #ffffff;
+  --ink: #1e2a25;
+  --slate: #5a6a64;
+  --pine: #2b4b3c;
+  --pine-deep: #1f3a2d;
+  --sky: #c8dbe6;
+  --line: #d9e2df;
+  --amber: #b9791f;
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --site: 72rem;      /* header, footer, page grid */
+  --measure: 44rem;   /* running text */
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: var(--snow); color: var(--ink); font: 17px/1.6 var(--sans); }
+a { color: var(--pine); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 .4rem; }
+h1 { font-size: clamp(2rem, 5vw, 2.75rem); }
+.container { max-width: var(--site); margin: 0 auto; padding: 0 1.5rem; }
+
+/* Header: photo background (static/images/pirin-lakes.jpg) with a dark
+   scrim so the white text stays readable. Tall on the home page, a short
+   band elsewhere. Change the image by replacing the two files in
+   static/images/ (1800px and 900px wide). */
+.site-header {
+  position: relative; color: #fff; min-height: clamp(11rem, 20vw, 15rem);
+  background-color: var(--pine-deep);
+  background-image:
+    linear-gradient(rgba(12, 28, 24, .55), rgba(12, 28, 24, .10) 45%, rgba(12, 28, 24, .35)),
+    url("../images/pirin-lakes.jpg");
+  background-size: cover; background-position: center 42%;
+}
+.site-header.home { min-height: clamp(18rem, 38vw, 26rem); background-position: center 34%; }
+@media (max-width: 900px) {
+  .site-header { background-image:
+    linear-gradient(rgba(12, 28, 24, .55), rgba(12, 28, 24, .10) 45%, rgba(12, 28, 24, .35)),
+    url("../images/pirin-lakes-900.jpg"); }
+}
+.site-header a { color: #fff; }
+.header-inner { position: relative; display: flex; flex-direction: column; min-height: inherit; text-shadow: 0 1px 8px rgba(0, 0, 0, .45); }
+.topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 2rem; padding: 1.1rem 0; }
+.brand { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+nav { display: flex; flex-wrap: wrap; gap: .2rem 1.5rem; }
+nav a { text-decoration: none; padding: .3rem 0; border-bottom: 2px solid transparent; font-size: 1.02rem; }
+nav a[aria-current], nav a:hover { border-bottom-color: #fff; }
+.hero { margin: auto 0 0; padding: 2rem 0 3.5rem; max-width: 48rem; }
+.hero h1 { margin-bottom: .6rem; font-size: clamp(2.4rem, 5.5vw, 3.6rem); }
+.hero p { margin: 0; font-size: 1.25rem; }
+@media (max-width: 600px) {
+  .topbar { padding: .9rem 0; }
+  nav { gap: .1rem 1rem; }
+}
+
+/* Page body */
+main.container { flex: 1; width: 100%; padding-top: 2.5rem; padding-bottom: 4rem; }
+.page-head { max-width: var(--measure); }
+.lead { font-size: 1.15rem; color: var(--slate); margin: 0 0 1.5rem; }
+.crumbs { margin: 0 0 .5rem; font-size: .9rem; color: var(--slate); }
+.intro { font-size: 1.15rem; max-width: var(--measure); }
+.content { max-width: var(--measure); }
+.content p { margin: 0 0 1rem; }
+.content img { max-width: 100%; height: auto; border-radius: 4px; }
+.content h2 { font-size: 1.4rem; margin-top: 2rem; }
+.empty { color: var(--slate); }
+
+/* Home: section tiles */
+.sections { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+.sections a { display: flex; flex-direction: column; height: 100%; padding: 1.4rem 1.5rem 1.25rem; background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--pine); text-decoration: none; color: inherit; }
+.sections a:hover { border-color: var(--pine); }
+.section-title { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--pine); }
+.section-summary { color: var(--slate); margin: .35rem 0 1rem; }
+.section-count { margin-top: auto; font-size: .9rem; color: var(--slate); }
+
+/* Section lists: entries in a grid, one per tile */
+.entries { list-style: none; padding: 0; margin: .5rem 0 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); }
+.entries a { display: block; height: 100%; padding: 1.25rem 1.5rem; background: var(--paper); border: 1px solid var(--line); text-decoration: none; color: inherit; }
+.entries a:hover { border-color: var(--pine); }
+.entry-title { display: block; font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--pine); }
+.entry-summary { display: block; margin-top: .25rem; }
+.entry-facts { display: block; margin-top: .6rem; padding-top: .6rem; border-top: 1px solid var(--line); font-size: .9rem; color: var(--slate); }
+.entry-facts span + span::before { content: ", "; }
+
+/* Facts box on a place page */
+.page-body { display: grid; gap: 2rem 3rem; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 860px) { .page-body.has-facts { grid-template-columns: minmax(0, 1fr) 20rem; } .page-body .facts { grid-column: 2; grid-row: 1; } }
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: .4rem 1.25rem; margin: 0 0 1rem; padding: 1.1rem 1.25rem; background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--sky); align-self: start; }
+.facts dt { color: var(--slate); }
+.facts dd { margin: 0; }
+@media (max-width: 420px) { .facts { grid-template-columns: 1fr; gap: .1rem; } .facts dt { font-size: .85rem; margin-top: .5rem; } }
+
+.badge { display: inline-block; font-family: var(--sans); font-size: .7rem; font-weight: 600; vertical-align: middle; color: var(--amber); border: 1px solid currentColor; border-radius: 3px; padding: .05em .45em; margin-left: .35em; letter-spacing: .02em; }
+.tags { margin-top: 2rem; font-size: .9rem; }
+.tags a { margin-right: .75rem; }
+
+.site-footer { margin-top: auto; border-top: 1px solid var(--line); background: var(--paper); color: var(--slate); font-size: .875rem; padding: 1.5rem 0 2rem; }
+.site-footer p { margin: 0; }

@@ -1,0 +1,28 @@
+{{ define "main" }}
+<div class="page-head">
+  <h1>{{ .Title }}</h1>
+  {{ with .Params.summary }}<p class="lead">{{ . }}</p>{{ end }}
+  {{ with .Content }}<div class="content">{{ . }}</div>{{ end }}
+</div>
+{{ if .Pages }}
+<ul class="entries">
+  {{ range .Pages.ByWeight }}
+  <li>
+    <a href="{{ .RelPermalink }}">
+      <span class="entry-title">{{ .Title }}{{ if .Params.sponsored }} <span class="badge">Sponsored</span>{{ end }}</span>
+      {{ with .Params.summary }}<span class="entry-summary">{{ . }}</span>{{ end }}
+      {{ if or .Params.distance .Params.hours .Params.price }}
+      <span class="entry-facts">
+        {{- with .Params.distance }}<span>{{ . }}</span>{{ end -}}
+        {{- with .Params.price }}<span>{{ . }}</span>{{ end -}}
+        {{- with .Params.hours }}<span>{{ . }}</span>{{ end -}}
+      </span>
+      {{ end }}
+    </a>
+  </li>
+  {{ end }}
+</ul>
+{{ else }}
+<p class="empty">Nothing here yet. Ask at reception, or check back soon.</p>
+{{ end }}
+{{ end }}

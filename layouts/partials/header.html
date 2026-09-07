@@ -1,0 +1,18 @@
+<header class="site-header{{ if .IsHome }} home{{ end }}">
+  <div class="container header-inner">
+    <div class="topbar">
+      <a class="brand" href="{{ "/" | relURL }}">{{ .Site.Title }}</a>
+      <nav aria-label="Sections">
+        {{ range .Site.Menus.main }}
+          <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . | or ($.HasMenuCurrent "main" .) }} aria-current="page"{{ end }}>{{ .Name }}</a>
+        {{ end }}
+      </nav>
+    </div>
+    {{ if .IsHome }}
+    <div class="hero">
+      <h1>{{ .Title }}</h1>
+      <p>{{ .Site.Params.description }}</p>
+    </div>
+    {{ end }}
+  </div>
+</header>

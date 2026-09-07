@@ -1,0 +1,35 @@
+# Site configuration. Keep this small; content lives in content/.
+baseURL = 'https://example.github.io/aspenguides/'   # set to the real URL once the repo / domain exists
+locale = 'en-US'
+title = 'Aspen Suites Guest Guide'
+
+[params]
+  description = 'Where to eat, what to do and how things work around Aspen Suites.'
+  # Address shown in the footer and used for "directions" links.
+  address = 'Aspen Suites'
+  # Shown in the footer under the header photo (static/images/pirin-lakes.jpg).
+  photoCredit = 'Header photo: Gergiyski lakes, Pirin.'
+
+# Section order and labels for the top navigation.
+[[menus.main]]
+  name = 'Eat & Drink'
+  pageRef = '/eat'
+  weight = 10
+[[menus.main]]
+  name = 'Things to do'
+  pageRef = '/do'
+  weight = 20
+[[menus.main]]
+  name = 'Amenities'
+  pageRef = '/amenities'
+  weight = 30
+[[menus.main]]
+  name = 'Essentials'
+  pageRef = '/essentials'
+  weight = 40
+
+[markup.goldmark.renderer]
+  unsafe = true   # allow raw HTML (e.g. embedded maps) inside markdown
+
+[taxonomies]
+  tag = 'tags'

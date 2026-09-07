@@ -1,0 +1,13 @@
+{{/* Facts box for a place page. Only rows with a value are shown. */}}
+{{ $p := .Params }}
+{{ if or $p.address $p.distance $p.phone $p.website $p.hours $p.price $p.map }}
+<dl class="facts">
+  {{ with $p.distance }}<dt>Distance</dt><dd>{{ . }}</dd>{{ end }}
+  {{ with $p.address }}<dt>Address</dt><dd>{{ . }}</dd>{{ end }}
+  {{ with $p.hours }}<dt>Hours</dt><dd>{{ . }}</dd>{{ end }}
+  {{ with $p.price }}<dt>Price</dt><dd>{{ . }}</dd>{{ end }}
+  {{ with $p.phone }}<dt>Phone</dt><dd><a href="tel:{{ replace . " " "" }}">{{ . }}</a></dd>{{ end }}
+  {{ with $p.website }}<dt>Website</dt><dd><a href="{{ . }}" rel="noopener">{{ . | replaceRE "^https?://(www\\.)?" "" | strings.TrimSuffix "/" }}</a></dd>{{ end }}
+  {{ with $p.map }}<dt>Map</dt><dd><a href="{{ . }}" rel="noopener">Open in Google Maps</a></dd>{{ end }}
+</dl>
+{{ end }}

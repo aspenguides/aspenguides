@@ -1,200 +1,118 @@
-# Repository Guidelines
+# Aspen Suites Guest Guide — Repository Guidelines
 
-This is a simple static website that helps guests of aspensuites resort to find useful accomodation restourants and entertainment. For now the site will be static - withotu backend. Servin:
+A small static website for guests of Aspen Suites: where to eat, what to do,
+where the pool is, how the Wi-Fi works. No backend, no database, no login.
+Content changes rarely. Later we may add paid listings for restaurants that
+want to advertise; those are ordinary pages with `sponsored = true`.
+
+## Stack (decided — do not add frameworks or services without asking)
+
+- **Hugo** (extended, v0.165+) builds Markdown into HTML. No theme dependency:
+  the handful of templates in `layouts/` are ours and are meant to stay small.
+- **Plain CSS** in `static/css/site.css`, plus the Fraunces webfont from
+  Google Fonts for headings. No JavaScript unless a page really needs it (an
+  embedded map, for example). No Tailwind, no bundler, no npm.
+- **GitHub Pages** hosts the site, deployed by `.github/workflows/hugo.yml`
+  on every push to `main`. No domain yet; `baseURL` in `hugo.toml` is a
+  placeholder and the workflow overrides it with the Pages URL at build time.
+- **Beads (`bd`)** tracks work. There is no remote repo yet.
 
 ## Structure
 
-| Path                  | What it is                                                                                                                                                |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/web`            | Vite + TypeScript web app                                                                                                                                 |
-| `apps/mobile`         | Expo (React Native) mobile app                                                                                                                            |
-| `services/api`        | FastAPI backend — domain modules under `app/`, Alembic migrations, worker entrypoints (`weather_watch.py`, `dispatch_reminders.py`, `account_cleanup.py`) |
-| `services/analysis`   | Redis Streams worker for async plant image analysis                                                                                                       |
-| `services/classifier` | ML classifier service (PlantCLEF ViT)                                                                                                                     |
-| `packages/api-client` | Shared TypeScript API client                                                                                                                              |
-| `docs/`               | Decisions, plans, runbooks (indexed by `docs/README.md`)                                                                                                  |
+| Path                        | What it is                                                        |
+| --------------------------- | ----------------------------------------------------------------- |
+| `content/`                  | All pages, as Markdown. One folder per section (see below).       |
+| `content/<section>/_index.md` | Section title and intro shown on the list page.                 |
+| `archetypes/place.md`       | Template for a restaurant / attraction / amenity page.            |
+| `archetypes/default.md`     | Template for a plain text page.                                   |
+| `layouts/`                  | HTML templates: `baseof`, `index` (home), `list`, `single`, partials. |
+| `static/css/site.css`       | The stylesheet. Colours are CSS variables at the top.             |
+| `static/`                   | Images and other files copied to the site as-is.                  |
+| `hugo.toml`                 | Site title, description, navigation menu.                         |
+| `.github/workflows/hugo.yml`| Build + deploy to GitHub Pages.                                   |
+| `public/`                   | Build output. Git-ignored; never edit.                            |
 
-Brand assets in `docs/brand/brand-kit-export/` are self-contained `.dc.html`
-files — inline styles only, do not refactor.
+Sections (each is a folder under `content/` and an entry in `[[menus.main]]`):
+`eat` (restaurants, cafés, bars), `do` (activities, attractions), `amenities`
+(pool, gym, laundry, on-site things), `essentials` (Wi-Fi, check-out,
+parking, pharmacy, emergency numbers). Add a section by creating the folder
+with an `_index.md` and a menu entry in `hugo.toml`.
 
-## Architecture guardrails (authoritative — do not deviate)
+## Adding or editing content (the everyday workflow)
 
-The stack is decided. Do not introduce new infrastructure components,
-frameworks, or external services without explicit human approval in the spec:
+1. Create a page from the template:
+   ```sh
+   hugo new eat/luigis-pizza.md -k place      # restaurant, shop, trail, amenity…
+   hugo new essentials/check-out.md            # plain text page
+   ```
+   The file name becomes the URL (`/eat/luigis-pizza/`). Use lowercase and hyphens.
+2. Open the file. Fill in the front matter (the block between `+++`). Delete
+   fields you don't know; empty fields are simply not shown. Write the body
+   in Markdown below it.
+3. Set `draft = false` when it is ready. Drafts never appear on the live site.
+4. Preview locally: `hugo server -D` and open http://localhost:1313 (`-D`
+   shows drafts too).
+5. Commit and push to `main`. GitHub Actions builds and publishes in ~1 minute.
 
-- **Queues/events**: Redis Streams (conventions in `docs/events.md`). No
-  Kafka, RabbitMQ, SQS, Celery, or new brokers.
-- **Database**: Postgres via SQLAlchemy 2.0 + Alembic. No other datastores.
-- **Cache**: Redis.
-- **Object storage**: MinIO (S3 API).
-- **Auth**: Clerk. Entitlements (Free/Trial/Pro) are enforced in the backend.
-- **Backend**: Python 3.13, FastAPI, Pydantic, uv/ruff/ty (follow the
-  python-backend skill). **Frontend**: TypeScript, Vite (web), Expo (mobile).
-- **LLM calls** go through the LiteLLM gateway; never call providers directly.
-- **Email**: Resend, behind the `EmailSender` protocol in
-  `app/notifications/`; only `app/notifications/email.py` may talk to the
-  provider. No SMTP libraries, no other providers.
-- **Forum**: NodeBB is separate, integrated only via session-handoff SSO.
-- **Deploy**: images built in CI → Harbor → tag bump in `vsrv-gitops` →
-  Argo CD. This repo contains no k8s manifests; do not add any.
+Front matter fields for a place: `title`, `summary` (one sentence, shown in
+lists), `weight` (lower = earlier in the list), `tags`, and under `[params]`:
+`address`, `distance`, `phone`, `website`, `hours`, `price`, `map`,
+`sponsored`. Order in lists is by `weight`, so give pages 10, 20, 30… to
+leave room.
+
+Images go in `static/images/` and are referenced as `![alt](/images/name.jpg)`.
+Keep them under ~300 KB; resize before committing.
 
 ## Commands
 
-mise is the runner: `mise run setup` / `mise run dev` / `mise run test`.
-Narrower loops: `pnpm --dir apps/web test`; per Python service (`cd` into it):
-`uv run pytest`, `uv run ruff check .`, `uv run ty check`. Use the
-`yardling:verify` skill to verify a change end-to-end in the running stack.
-
-Agent-side frontend checks: use `pnpm --dir apps/web test:unit` and `build`
-(the typecheck) rather than `test`, which chains `lint` in first; and avoid
-`pnpm --dir apps/mobile lint` (`expo lint`), which bootstraps ESLint and
-rewrites `pnpm-lock.yaml`, `package.json`, and an eslint config as a side
-effect. Revert those files if it runs.
-
-`apps/web` component tests run in vitest's default `node` environment (no
-jsdom, no testing-library): they are `renderToStaticMarkup` checks of a
-component's initial render. Anything behind a click or state change is
-tested through a helper in `src/utils/`, not by simulating events.
-
-## Style & testing
-
-- Match the closest existing module — structure, naming, error handling, and
-  test style. Keep changes focused; small patches over broad refactors.
-- Every behavior change gets tests; bug fixes get a regression test when
-  practical. If automation can't cover it, document manual verification in
-  the PR.
-- No plaintext secrets, API keys, or model tokens in the repo (SOPS for
-  anything encrypted).
-- `apps/web` enforces `react-refresh/only-export-components` as a lint
-  error: a `.tsx` component file may export only components (and types).
-  Pure helpers shared with tests go in `src/utils/`, not the component file.
-
-## Commits & pull requests
-
-Short imperative commits (`Add garden feed pagination`). Agent branches are
-named `agent/<slug>`. PRs include a summary, testing performed, and
-screenshots for user-visible changes. Stacked PRs use the `gh stack`
-extension: create each PR with `gh pr create --base <parent-branch>` (note
-the dependency in the body), then wire them together with
-`gh stack link <bottom-PR> ... <top-PR>` — or manage the chain end-to-end
-with `gh stack init`/`add`/`submit`. `link` creates the stack on GitHub only;
-run `gh stack checkout <stack#>` afterwards for local tracking
-(`view`/`sync`/`rebase`). Merge stacks bottom-up. Before editing,
-run `git status --short` and avoid overwriting unrelated user changes.
-Commits are signed through 1Password: `git commit`/`git push` must run
-outside the agent sandbox with the 1Password app unlocked, or signing fails
-with "failed to fill whole buffer". Never disable signing to work around it.
-
-## Collective memory
-
-Two stores, split by kind:
-
-- **Conventions, architecture decisions, and guardrails** live in `AGENTS.md`
-  and `docs/` — they must load automatically for every agent and be
-  PR-reviewable. When you establish a convention or find a stale doc, fix it
-  in the same PR.
-- **Operational gotchas and task-scoped facts** go to `bd remember`.
-
-Work tracking is split the same way: GitHub Issues are the human intake
-surface (QA reports, feature requests — filed and tracked by people); beads
-are the agent execution ledger.
-
-- Whenever the user mentions a GitHub issue in any form (`#N`, "issue N", an
-  issue URL), fetch it with `gh issue view N --comments` before responding —
-  never answer from the issue number alone or ask the user to paste it.
-- When that issue leads to planned work, create a fully-specced bead for it
-  noting `gh-N` (check first that one doesn't already exist), and include
-  `Closes #N` in the eventual PR so the issue closes on merge for whoever
-  filed it. The issue is a symptom or wish; the bead is the diagnosed spec.
-- Agent-internal work (refactors, chores) lives only in beads.
-
-## Beads Issue Tracker
-
-Claude implementation work uses `bd prime` as the compact lifecycle guide
-(the `.claude/settings.json` SessionStart hook injects `.beads/PRIME.md`).
-Codex is primarily a review agent: inspect Beads only when relevant and do not
-create, claim, update, or close tasks during a review unless explicitly asked.
-Its Beads hooks are intentionally absent; do not run `bd setup codex` or
-`bd setup claude` — this section is maintained by hand, not by `bd`.
-Use `bd` rather than markdown TODOs for durable work and `bd remember` rather
-than `MEMORY.md` for operational facts. Do not commit, push Git, or sync Dolt
-without explicit authority.
-
-<!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:6cd5cc61 -->
-## Beads Issue Tracker
-
-This project uses **bd (beads)** for issue tracking. Run `bd prime` to see full workflow context and commands.
-
-### Quick Reference
-
-```bash
-bd ready              # Find available work
-bd show <id>          # View issue details
-bd update <id> --claim  # Claim work
-bd close <id>         # Complete work
+```sh
+hugo server -D        # live preview with drafts
+hugo                  # production build into public/
+hugo --minify         # what CI runs
 ```
 
-### Rules
+## Look and feel
 
-- Use `bd` for ALL task tracking — do NOT use TodoWrite, TaskCreate, or markdown TODO lists
-- Run `bd prime` for detailed command reference and session close protocol
-- Use `bd remember` for persistent knowledge — do NOT use MEMORY.md files
+The design is ours, not a downloaded theme. Palette: pine green, alpine sky
+blue, snow white, slate grey; amber is reserved for the Sponsored badge.
+Headings in Fraunces (serif), body in the system sans. Page grid is 72rem
+wide with the brand left and navigation right in the header bar; running text
+is capped at 44rem. Home sections and list entries are white tiles in a grid;
+on a place page the facts box sits to the right of the text on wide screens. The header photo (Gergiyski lakes, Pirin, in
+`static/images/pirin-lakes.jpg` with a 900px copy for phones) is the one
+decorative element: tall with the welcome text on the home page, a short band
+on every other page, always under a dark scrim so the white header text reads.
+Everything below it stays quiet: flat tiles with a hairline border, no
+shadows, no animation. To change the photo, replace both files (keep them
+under ~800 KB and ~200 KB) and update `photoCredit` in `hugo.toml`. To
+recolour, edit the variables at the top of `site.css`. The 7 MB original photo
+in the repo root is git-ignored; never commit originals.
 
-**Architecture in one line:** issues live in a local Dolt DB; sync uses `refs/dolt/data` on your git remote; `.beads/issues.jsonl` is a passive export. See https://github.com/gastownhall/beads/blob/main/docs/SYNC_CONCEPTS.md for details and anti-patterns.
+## Style
 
-## Agent Context Profiles
+- Write for a guest on a phone: short pages, plain words, the useful facts
+  first (distance, hours, price). One place per page.
+- Keep templates readable over clever. If a layout change needs more than a
+  few lines of Hugo templating, stop and consider whether the content can
+  carry it instead.
+- Facts about third parties (hours, prices) drift. Prefer "check the website"
+  links over copying menus and prices in detail.
+- Sponsored listings must show the `Sponsored` badge (set `sponsored = true`);
+  never hide it.
+- No secrets, keys or personal guest data in the repo. It is a public site.
 
-The managed Beads block is task-tracking guidance, not permission to override repository, user, or orchestrator instructions.
+## Commits
 
-- **Conservative (default)**: Use `bd` for task tracking. Do not run git commits, git pushes, or Dolt remote sync unless explicitly asked. At handoff, report changed files, validation, and suggested next commands.
-- **Minimal**: Keep tool instruction files as pointers to `bd prime`; use the same conservative git policy unless active instructions say otherwise.
-- **Team-maintainer**: Only when the repository explicitly opts in, agents may close beads, run quality gates, commit, and push as part of session close. A current "do not commit" or "do not push" instruction still wins.
+Short imperative subject lines (`Add Luigi's Pizza`, `Fix pool hours`).
+Content-only changes can be committed straight to `main`. Template or
+workflow changes: build locally first (`hugo`) and check one page of each
+kind renders. Do not push without being asked; there is no remote yet.
 
-## Session Completion
+## Work tracking (beads)
 
-This protocol applies when ending a Beads implementation workflow. It is subordinate to explicit user, repository, and orchestrator instructions.
-
-1. **File issues for remaining work** - Create beads for anything that needs follow-up
-2. **Run quality gates** (if code changed) - Tests, linters, builds
-3. **Update issue status** - Close finished work, update in-progress items
-4. **Handle git/sync by active profile**:
-   ```bash
-   # Conservative/minimal/default: report status and proposed commands; wait for approval.
-   git status
-
-   # Team-maintainer opt-in only, unless current instructions forbid it:
-   git pull --rebase
-   git push
-   git status
-   ```
-5. **Hand off** - Summarize changes, validation, issue status, and any blocked sync/commit/push step
-
-**Critical rules:**
-- Explicit user or orchestrator instructions override this Beads block.
-- Do not commit or push without clear authority from the active profile or the current user request.
-- If a required sync or push is blocked, stop and report the exact command and error.
-<!-- END BEADS INTEGRATION -->
-
-<!-- BEGIN BEADS CODEX SETUP: generated by bd setup codex -->
-## Beads Issue Tracker
-
-Use Beads (`bd`) for durable task tracking in repositories that include it. Use the `beads` skill at `.agents/skills/beads/SKILL.md` (project install) or `~/.agents/skills/beads/SKILL.md` (global install) for Beads workflow guidance, then use the `bd` CLI for issue operations.
-
-### Quick Reference
-
-```bash
-bd ready                # Find available work
-bd show <id>            # View issue details
-bd update <id> --claim  # Claim work
-bd close <id>           # Complete work
-bd prime                # Refresh Beads context
-```
-
-### Rules
-
-- Use `bd` for all task tracking; do not create markdown TODO lists.
-- Run `bd prime` when Beads context is missing or stale. Codex 0.129.0+ can load Beads context automatically through native hooks; use `/hooks` to inspect or toggle them.
-- Keep persistent project memory in Beads via `bd remember`; do not create ad hoc memory files.
-
-**Architecture in one line:** issues live in a local Dolt DB; sync uses `refs/dolt/data` on your git remote; `.beads/issues.jsonl` is a passive export. See https://github.com/gastownhall/beads/blob/main/docs/SYNC_CONCEPTS.md for details and anti-patterns.
-<!-- END BEADS CODEX SETUP -->
+Use `bd` for anything that outlives the current session: content still to
+gather, template ideas, launch tasks. `bd ready` shows what can be started;
+`bd create "…"`, `bd update <id> --status in_progress`, `bd close <id>`.
+Operational gotchas go to `bd remember`, not into this file. Conventions and
+decisions go into this file. Keep both current: when you change how
+something works, update AGENTS.md in the same commit.
