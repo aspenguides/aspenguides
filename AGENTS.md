@@ -120,6 +120,14 @@ in the repo root is git-ignored; never commit originals.
   never hide it.
 - No secrets, keys or personal guest data in the repo. It is a public site.
 
+## Analytics
+
+Google Analytics is wired in `layouts/_default/baseof.html` via Hugo's
+built-in template and switched on by setting `services.googleAnalytics.id`
+in `hugo.toml`. It only loads in production builds. Guests are mostly in the
+EU, so before enabling it decide on cookie consent (GA sets cookies) or use a
+cookieless tool instead; see the analytics bead.
+
 ## Commits
 
 Short imperative subject lines (`Add Luigi's Pizza`, `Fix pool hours`).

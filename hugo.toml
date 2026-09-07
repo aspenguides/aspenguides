@@ -63,6 +63,11 @@ defaultContentLanguageInSubdir = false
   # Shown in the footer under the header photo (static/images/pirin-lakes.jpg).
   photoCredit = 'Header photo: <a href="https://commons.wikimedia.org/wiki/File:Pirin_-_Gergiyski_ezera_-_IMG_4439.jpg">Gergiyski lakes, Pirin</a> by Dido3, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, cropped and resized.'
 
+# Visitor tracking. Leave the id empty to disable. Only included in
+# production builds (the GitHub Pages deploy), never in `hugo server`.
+[services.googleAnalytics]
+  id = ''   # e.g. 'G-XXXXXXXXXX' from analytics.google.com
+
 [markup.goldmark.renderer]
   unsafe = true   # allow raw HTML (e.g. embedded maps) inside markdown
 
