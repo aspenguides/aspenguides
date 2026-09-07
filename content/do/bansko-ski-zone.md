@@ -17,7 +17,7 @@ The ski zone sits on the slopes of the Pirin mountains above the town. An 8-pers
 
 ## What to expect
 
-- About 75 km of marked pistes across three linked areas: Banderishka Polyana, Chalin Valog and Shiligarnika. There are runs for every level, from wide nursery slopes to steep blacks under Todorka.
+- About 75 km of marked ski runs across three linked areas: Banderishka Polyana, Chalin Valog and Shiligarnika. There is something for every level, from wide beginner slopes to steep expert runs under Todorka.
 - The ski road, a long gentle run back to town, is lit for night skiing once a week.
 - Ski schools, equipment hire and lockers are at the gondola station and at Banderishka Polyana.
 
