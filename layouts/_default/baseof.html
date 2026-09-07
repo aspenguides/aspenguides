@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400;9..144,600;9..144,700&display=swap">
   {{ range .AllTranslations }}<link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}">
   {{ end }}<link rel="stylesheet" href="{{ "css/site.css" | relURL }}">
+  {{ if hugo.IsProduction }}{{ partial "analytics.html" . }}{{ end }}
 </head>
 <body>
   {{ partial "header.html" . }}
