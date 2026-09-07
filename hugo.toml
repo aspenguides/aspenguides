@@ -1,5 +1,5 @@
 # Site configuration. Keep this small; content lives in content/.
-baseURL = 'https://example.github.io/aspenguides/'   # set to the real URL once the repo / domain exists
+baseURL = 'https://aspenguides.github.io/aspenguides/'
 locale = 'en-US'
 title = 'Aspen Suites Guest Guide'
 
