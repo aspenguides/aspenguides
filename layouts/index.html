@@ -7,7 +7,7 @@
     <a href="{{ .RelPermalink }}">
       <span class="section-title">{{ .Title }}</span>
       {{ with .Params.summary }}<span class="section-summary">{{ . }}</span>{{ end }}
-      <span class="section-count">{{ len .RegularPages }} {{ if eq (len .RegularPages) 1 }}entry{{ else }}entries{{ end }}</span>
+      <span class="section-count">{{ i18n "entries" (len .RegularPages) }}</span>
     </a>
   </li>
   {{ end }}

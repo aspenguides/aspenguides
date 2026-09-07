@@ -1,0 +1,28 @@
+# Interface strings. Content is translated in content/ (name.bg.md), not here.
+[entries]
+one = "{{ .Count }} entry"
+other = "{{ .Count }} entries"
+[distance]
+other = "Distance"
+[address]
+other = "Address"
+[hours]
+other = "Hours"
+[price]
+other = "Price"
+[phone]
+other = "Phone"
+[website]
+other = "Website"
+[map]
+other = "Map"
+[open_in_maps]
+other = "Open in Google Maps"
+[sponsored]
+other = "Sponsored"
+[nothing_here]
+other = "Nothing here yet. Ask at reception, or check back soon."
+[disclaimer]
+other = "Hours and prices belong to the venues and can change; check before you go."
+[language]
+other = "Language"

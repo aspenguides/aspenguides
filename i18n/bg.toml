@@ -1,0 +1,27 @@
+[entries]
+one = "{{ .Count }} запис"
+other = "{{ .Count }} записа"
+[distance]
+other = "Разстояние"
+[address]
+other = "Адрес"
+[hours]
+other = "Работно време"
+[price]
+other = "Цени"
+[phone]
+other = "Телефон"
+[website]
+other = "Уебсайт"
+[map]
+other = "Карта"
+[open_in_maps]
+other = "Отвори в Google Maps"
+[sponsored]
+other = "Реклама"
+[nothing_here]
+other = "Все още няма нищо тук. Попитайте на рецепцията или проверете отново скоро."
+[disclaimer]
+other = "Работното време и цените са на съответните обекти и могат да се променят; проверете преди да тръгнете."
+[language]
+other = "Език"

@@ -7,6 +7,11 @@
           <a href="{{ .URL }}"{{ if $.IsMenuCurrent "main" . | or ($.HasMenuCurrent "main" .) }} aria-current="page"{{ end }}>{{ .Name }}</a>
         {{ end }}
       </nav>
+      {{ if .IsTranslated }}
+      <nav class="lang" aria-label="{{ i18n "language" }}">
+        {{ range .AllTranslations }}<a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}" lang="{{ .Language.Lang }}" title="{{ .Language.LanguageName }}"{{ if eq .Language.Lang $.Language.Lang }} aria-current="true"{{ end }}>{{ .Language.Lang | upper }}</a>{{ end }}
+      </nav>
+      {{ end }}
     </div>
     {{ if .IsHome }}
     <div class="hero">

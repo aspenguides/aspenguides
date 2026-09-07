@@ -1,6 +1,6 @@
 <footer class="site-footer">
   <div class="container">
-    <p>{{ .Site.Params.address }}. Hours and prices belong to the venues and can change; check before you go.</p>
+    <p>{{ .Site.Params.address }}. {{ i18n "disclaimer" }}</p>
     {{ with .Site.Params.photoCredit }}<p>{{ . | safeHTML }}</p>{{ end }}
   </div>
 </footer>

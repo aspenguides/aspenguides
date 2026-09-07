@@ -28,7 +28,8 @@ want to advertise; those are ordinary pages with `sponsored = true`.
 | `layouts/`                  | HTML templates: `baseof`, `index` (home), `list`, `single`, partials. |
 | `static/css/site.css`       | The stylesheet. Colours are CSS variables at the top.             |
 | `static/`                   | Images and other files copied to the site as-is.                  |
-| `hugo.toml`                 | Site title, description, navigation menu.                         |
+| `hugo.toml`                 | Languages, site title, description, navigation menus per language. |
+| `i18n/en.toml`, `i18n/bg.toml` | Interface strings (labels, footer text). Content is not here.   |
 | `.github/workflows/hugo.yml`| Build + deploy to GitHub Pages.                                   |
 | `public/`                   | Build output. Git-ignored; never edit.                            |
 
@@ -43,6 +44,7 @@ with an `_index.md` and a menu entry in `hugo.toml`.
 1. Create a page from the template:
    ```sh
    hugo new eat/luigis-pizza.md -k place      # restaurant, shop, trail, amenity…
+   hugo new eat/luigis-pizza.bg.md -k place   # its Bulgarian translation
    hugo new essentials/check-out.md            # plain text page
    ```
    The file name becomes the URL (`/eat/luigis-pizza/`). Use lowercase and hyphens.
@@ -62,6 +64,23 @@ leave room.
 
 Images go in `static/images/` and are referenced as `![alt](/images/name.jpg)`.
 Keep them under ~300 KB; resize before committing.
+
+## Languages
+
+English (default, at the site root) and Bulgarian (under `/bg/`). A page is
+translated by adding a sibling file with the language code before `.md`:
+`content/eat/luigis-pizza.md` (English) and `content/eat/luigis-pizza.bg.md`
+(Bulgarian). Same front matter fields, translated values. A page without a
+translation simply does not appear in the other language's lists, and the
+header toggle only offers languages the current page exists in. Section
+titles live in `_index.<lang>.md`; menu labels and the site title per
+language are in `hugo.toml`; short interface labels (Distance, Hours,
+Sponsored, the footer note) are in `i18n/<lang>.toml`. When adding an
+English page, add the Bulgarian one in the same commit whenever you can.
+
+To add a third language: copy a `[languages.xx]` block in `hugo.toml`, add
+`i18n/xx.toml`, and translate `content/_index.xx.md` plus each section's
+`_index.xx.md`.
 
 ## Commands
 

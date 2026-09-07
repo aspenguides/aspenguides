@@ -46,10 +46,15 @@ h1 { font-size: clamp(2rem, 5vw, 2.75rem); }
 .site-header a { color: #fff; }
 .header-inner { position: relative; display: flex; flex-direction: column; min-height: inherit; text-shadow: 0 1px 8px rgba(0, 0, 0, .45); }
 .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem 2rem; padding: 1.1rem 0; }
-.brand { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.brand { font-family: var(--serif); font-size: 1.4rem; font-weight: 700; text-decoration: none; line-height: 1.2; }
 nav { display: flex; flex-wrap: wrap; gap: .2rem 1.5rem; }
 nav a { text-decoration: none; padding: .3rem 0; border-bottom: 2px solid transparent; font-size: 1.02rem; }
 nav a[aria-current], nav a:hover { border-bottom-color: #fff; }
+.lang { flex-wrap: nowrap; gap: 0; font-size: .85rem; letter-spacing: .04em; border: 1px solid rgba(255,255,255,.6); border-radius: 3px; overflow: hidden; }
+.lang a { padding: .2rem .55rem; border-bottom: 0; }
+.lang a + a { border-left: 1px solid rgba(255,255,255,.6); }
+.lang a[aria-current] { background: rgba(255,255,255,.92); color: var(--pine-deep); text-shadow: none; }
+@media (min-width: 900px) { .topbar { flex-wrap: nowrap; } .topbar > nav:not(.lang) { margin-left: auto; } }
 .hero { margin: auto 0 0; padding: 2rem 0 3.5rem; max-width: 48rem; }
 .hero h1 { margin-bottom: .6rem; font-size: clamp(2.4rem, 5.5vw, 3.6rem); }
 .hero p { margin: 0; font-size: 1.25rem; }

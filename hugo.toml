@@ -1,32 +1,67 @@
 # Site configuration. Keep this small; content lives in content/.
 baseURL = 'https://aspenguides.github.io/aspenguides/'
-locale = 'en-US'
 title = 'Aspen Suites Guest Guide'
 
+# Languages. English is the default and lives at the site root; every other
+# language lives under its code (/bg/...). To add a language, copy a block
+# below, add i18n/<code>.toml, and translate content as <name>.<code>.md.
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = false
+
+[languages.en]
+  locale = 'en-US'
+  languageName = 'English'
+  weight = 1
+  title = 'Aspen Suites Guest Guide'
+  [languages.en.params]
+    description = 'Where to eat, what to do and how things work around Aspen Suites.'
+  [[languages.en.menus.main]]
+    name = 'Eat & Drink'
+    pageRef = '/eat'
+    weight = 10
+  [[languages.en.menus.main]]
+    name = 'Things to do'
+    pageRef = '/do'
+    weight = 20
+  [[languages.en.menus.main]]
+    name = 'Amenities'
+    pageRef = '/amenities'
+    weight = 30
+  [[languages.en.menus.main]]
+    name = 'Essentials'
+    pageRef = '/essentials'
+    weight = 40
+
+[languages.bg]
+  locale = 'bg-BG'
+  languageName = 'Български'
+  weight = 2
+  title = 'Пътеводител за Аспен Суитс'
+  [languages.bg.params]
+    description = 'Къде да хапнете, какво да правите и как работят нещата около Аспен Суитс.'
+  [[languages.bg.menus.main]]
+    name = 'Храна и напитки'
+    pageRef = '/eat'
+    weight = 10
+  [[languages.bg.menus.main]]
+    name = 'Какво да правим'
+    pageRef = '/do'
+    weight = 20
+  [[languages.bg.menus.main]]
+    name = 'Удобства'
+    pageRef = '/amenities'
+    weight = 30
+  [[languages.bg.menus.main]]
+    name = 'Полезно'
+    pageRef = '/essentials'
+    weight = 40
+
+# Shared across languages.
 [params]
-  description = 'Where to eat, what to do and how things work around Aspen Suites.'
-  # Address shown in the footer and used for "directions" links.
+  # Address shown in the footer.
   address = 'Aspen Suites'
   # Shown in the footer under the header photo (static/images/pirin-lakes.jpg).
   photoCredit = 'Header photo: <a href="https://commons.wikimedia.org/wiki/File:Pirin_-_Gergiyski_ezera_-_IMG_4439.jpg">Gergiyski lakes, Pirin</a> by Dido3, <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>, cropped and resized.'
-
-# Section order and labels for the top navigation.
-[[menus.main]]
-  name = 'Eat & Drink'
-  pageRef = '/eat'
-  weight = 10
-[[menus.main]]
-  name = 'Things to do'
-  pageRef = '/do'
-  weight = 20
-[[menus.main]]
-  name = 'Amenities'
-  pageRef = '/amenities'
-  weight = 30
-[[menus.main]]
-  name = 'Essentials'
-  pageRef = '/essentials'
-  weight = 40
 
 [markup.goldmark.renderer]
   unsafe = true   # allow raw HTML (e.g. embedded maps) inside markdown
